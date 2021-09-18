@@ -19,13 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function showTabsContent(i = 0) {
-        tabContent[i].style.display = 'block';
+        tabContent[i].classList.add('show', 'fade');
+        tabContent[i].classList.remove('hide');
         tabs[i].classList.add('tabheader__item_active');
     }
 
     function hideTabsContent() {
         tabContent.forEach(item => {
-            item.style.display = 'none';
+            item.classList.add('hide');
+            item.classList.remove('show', 'fade');
         });
 
         tabs.forEach(item => {
