@@ -141,4 +141,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('scroll', showModalByScroll);
+
+    //Cards 
+
+    class Card {
+         constructor(src, alt, subtitle, description, price, parent) {
+            this.src = src; 
+            this.alt = alt; 
+            this.subtitle = subtitle; 
+            this.description = description; 
+            this.price = price; 
+            this.rubPrice = 72; 
+            this.parent = document.querySelector(parent); 
+            this.changeToRub(); 
+         }
+
+         changeToRub() {
+             this.price *= this.rubPrice; 
+         }
+
+         createMenuItem() {
+             const menuItem = document.createElement('div'); 
+             this.parent.append(menuItem); 
+             
+             menuItem.innerHTML = `<div class="menu__item">
+             <img src=${this.src} alt=${this.alt}>
+             <h3 class="menu__item-subtitle">${this.subtitle}</h3>
+             <div class="menu__item-descr">${this.description}</div>
+             <div class="menu__item-divider"></div>
+             <div class="menu__item-price">
+                 <div class="menu__item-cost">Цена:</div>
+                 <div class="menu__item-total"><span>${this.price}</span> рублей/день</div>
+             </div>
+         </div>`
+         }
+    }
+
+    const fitnessMenu = new Card('img/tabs/vegy.jpg', 'vegy', 'Меню Фитнес', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 229, '[data-menu]');
+
+    fitnessMenu.createMenuItem(); 
 });
+
