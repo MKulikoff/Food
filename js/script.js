@@ -191,5 +191,55 @@ document.addEventListener('DOMContentLoaded', () => {
     const fitnessMenu = new Card('img/tabs/vegy.jpg', 'vegy', 'Меню Фитнес', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 229, '[data-menu]');
 
     fitnessMenu.createMenuItem(); 
+
+    //Forms 
+
+    const forms = document.querySelectorAll('form'); 
+
+    forms.forEach( (item) => {
+        postData(item);
+    })
+
+    const msg = {
+        loading: 'Загрузка...',
+        success: 'Данные отправлены',
+        fail: 'Произошла ошибка'
+    };
+
+    function postData(form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            const status = document.createElement('div'); 
+            status.textContent = msg.loading; 
+            form.append(status);  
+
+            const request = new XMLHttpRequest(); 
+            request.open('POST', 'server.php'); 
+
+            request.setRequestHeader('Content-type', 'application/json');
+            const formData = new FormData(form); 
+
+            const obj = {}; 
+
+            formData.forEach((item, key) => {
+                obj[key] = item; 
+            });
+
+            request.send(JSON.stringify(obj)); 
+
+            request.addEventListener('load', () => {
+                if(request.status === 200) {
+                    console.log(request.response);
+                    status.textContent = msg.success;
+                    form.reset(); 
+                    setTimeout(() => {
+                        status.remove();
+                    }, 2000); 
+                } else {
+                    status.textContent = msg.fail; 
+                }
+            });
+        });
+    }
 });
 
