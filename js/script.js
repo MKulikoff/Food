@@ -117,10 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', openModal);
     });
 
-    closeModalBtn.addEventListener('click', closeModal);
-
     modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
+        if (e.target === modal || e.target.getAttribute('data-close') == '') {
             closeModal();
         }
     });
@@ -133,10 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const modalTimerId = setTimeout(openModal, 5000);
 
-    function showModalByScroll() { 
-        if(window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
-            openModal(); 
-            window.removeEventListener('scroll', showModalByScroll); 
+    function showModalByScroll() {
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+            openModal();
+            window.removeEventListener('scroll', showModalByScroll);
         }
     }
 
@@ -145,36 +143,36 @@ document.addEventListener('DOMContentLoaded', () => {
     //Cards 
 
     class Card {
-         constructor(src, alt, subtitle, description, price, parent, ...classes) {
-            this.src = src; 
-            this.alt = alt; 
-            this.subtitle = subtitle; 
-            this.description = description; 
-            this.price = price; 
-            this.classes = classes; 
-            this.rubPrice = 72; 
-            this.parent = document.querySelector(parent); 
-            this.changeToRub(); 
-         }
+        constructor(src, alt, subtitle, description, price, parent, ...classes) {
+            this.src = src;
+            this.alt = alt;
+            this.subtitle = subtitle;
+            this.description = description;
+            this.price = price;
+            this.classes = classes;
+            this.rubPrice = 72;
+            this.parent = document.querySelector(parent);
+            this.changeToRub();
+        }
 
-         changeToRub() {
-             this.price *= this.rubPrice; 
-         }
+        changeToRub() {
+            this.price *= this.rubPrice;
+        }
 
-         createMenuItem() {
+        createMenuItem() {
 
-            
-             const menuItem = document.createElement('div'); 
-             
-             if (this.classes.length === 0) {
-                menuItem.classList.add('menu__item'); 
-             } else {
-                 this.classes.forEach(element => {
-                    menuItem.classList.add('element'); 
-                 });
-             }
-             
-             menuItem.innerHTML = `
+
+            const menuItem = document.createElement('div');
+
+            if (this.classes.length === 0) {
+                menuItem.classList.add('menu__item');
+            } else {
+                this.classes.forEach(element => {
+                    menuItem.classList.add('element');
+                });
+            }
+
+            menuItem.innerHTML = `
              <img src=${this.src} alt=${this.alt}>
              <h3 class="menu__item-subtitle">${this.subtitle}</h3>
              <div class="menu__item-descr">${this.description}</div>
@@ -184,19 +182,19 @@ document.addEventListener('DOMContentLoaded', () => {
                  <div class="menu__item-total"><span>${this.price}</span> рублей/день</div>
              </div>`;
 
-         this.parent.append(menuItem); 
-         }
+            this.parent.append(menuItem);
+        }
     }
 
     const fitnessMenu = new Card('img/tabs/vegy.jpg', 'vegy', 'Меню Фитнес', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 229, '[data-menu]');
 
-    fitnessMenu.createMenuItem(); 
+    fitnessMenu.createMenuItem();
 
     //Forms 
 
-    const forms = document.querySelectorAll('form'); 
+    const forms = document.querySelectorAll('form');
 
-    forms.forEach( (item) => {
+    forms.forEach((item) => {
         postData(item);
     })
 
@@ -208,38 +206,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function postData(form) {
         form.addEventListener('submit', (e) => {
-            e.preventDefault(); 
-            const status = document.createElement('div'); 
-            status.textContent = msg.loading; 
-            form.append(status);  
+            e.preventDefault();
+            const status = document.createElement('div');
+            status.textContent = msg.loading;
+            form.append(status);
 
-            const request = new XMLHttpRequest(); 
-            request.open('POST', 'server.php'); 
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
 
             request.setRequestHeader('Content-type', 'application/json');
-            const formData = new FormData(form); 
+            const formData = new FormData(form);
 
-            const obj = {}; 
+            const obj = {};
 
             formData.forEach((item, key) => {
-                obj[key] = item; 
+                obj[key] = item;
             });
 
-            request.send(JSON.stringify(obj)); 
+            request.send(JSON.stringify(obj));
 
             request.addEventListener('load', () => {
-                if(request.status === 200) {
+                if (request.status === 200) {
                     console.log(request.response);
-                    status.textContent = msg.success;
-                    form.reset(); 
-                    setTimeout(() => {
+                    loadingStatusModal(msg.success);
+                    form.reset();
                         status.remove();
-                    }, 2000); 
                 } else {
-                    status.textContent = msg.fail; 
+                    loadingStatusModal(msg.fail);
                 }
             });
         });
+    }
+
+    function loadingStatusModal(message) {
+        const prevModalDialog = document.querySelector('.modal__dialog');
+        prevModalDialog.classList.add('hide');
+        openModal();
+
+        const statusModal = document.createElement('div');
+        statusModal.classList.add('modal__dialog');
+        statusModal.innerHTML =
+            `<div class="modal__content">
+        <div data-close class="modal__close">×</div>
+        <div class="modal__title">${message}</div>
+             </div>`;
+
+        document.querySelector('.modal').append(statusModal);
+        setTimeout(() => {
+            statusModal.remove(); 
+            prevModalDialog.classList.add('show'); 
+            prevModalDialog.classList.remove('hide'); 
+            closeModal(); 
+        }, 4000);
     }
 });
 
