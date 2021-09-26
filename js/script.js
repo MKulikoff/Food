@@ -211,10 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
             status.classList.add('spinner'); 
             form.insertAdjacentElement('afterend', status); 
 
-            const request = new XMLHttpRequest();
-            request.open('POST', 'server.php');
-
-            request.setRequestHeader('Content-type', 'application/json');
             const formData = new FormData(form);
 
             const obj = {};
@@ -222,18 +218,24 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.forEach((item, key) => {
                 obj[key] = item;
             });
-        
-            request.send(JSON.stringify(obj));
 
-            request.addEventListener('load', () => {
-                if (request.status === 200) {
-                    console.log(request.response);
-                    loadingStatusModal(msg.success);
-                    form.reset();
-                        status.remove();
-                } else {
-                    loadingStatusModal(msg.fail);
-                }
+            fetch('server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(obj)
+            }).then(data => {
+                return data.text(); 
+            })
+            .then(data => {
+                console.log(data);
+                loadingStatusModal(msg.success);
+                status.remove();
+            }).catch(() => {
+                loadingStatusModal(msg.fail);
+            }).finally(() => {
+                form.reset();
             });
         });
     }
