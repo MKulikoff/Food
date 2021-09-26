@@ -96,8 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Modal 
 
-    const closeModalBtn = document.querySelector('[data-close]'),
-        openModalBtns = document.querySelectorAll('[data-modal]'),
+    const openModalBtns = document.querySelectorAll('[data-modal]'),
         modal = document.querySelector('.modal');
 
     function openModal() {
@@ -199,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     const msg = {
-        loading: 'Загрузка...',
+        loading: 'img/form/spinner.svg',
         success: 'Данные отправлены',
         fail: 'Произошла ошибка'
     };
@@ -207,9 +206,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function postData(form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            const status = document.createElement('div');
-            status.textContent = msg.loading;
-            form.append(status);
+            const status = document.createElement('img');
+            status.src = msg.loading;
+            status.classList.add('spinner'); 
+            form.insertAdjacentElement('afterend', status); 
 
             const request = new XMLHttpRequest();
             request.open('POST', 'server.php');
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.forEach((item, key) => {
                 obj[key] = item;
             });
-
+        
             request.send(JSON.stringify(obj));
 
             request.addEventListener('load', () => {

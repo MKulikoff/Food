@@ -18,3 +18,8 @@
         opacity: 1;
     }
 }
+
+.spinner {
+    display: block;
+    margin: 0 auto;
+}
