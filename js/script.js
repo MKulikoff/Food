@@ -284,13 +284,22 @@ document.addEventListener('DOMContentLoaded', () => {
             totalSlide = document.querySelector('#total'); 
 
         const sliderLength = sliderImg.length; 
-        let index = +currentSlide.textContent; 
+        let index = 1; 
+
+        function showSlide(slides) {
+            slides.forEach(slide => {
+                slide.classList.add('hide'); 
+            })
+            slides[index-1].classList.remove('hide'); 
+        }
 
             if(sliderLength > 10) {
                 totalSlide.innerText = sliderLength; 
             } else {
                 totalSlide.innerText = `0${sliderLength}`; 
             }
+
+            showSlide(sliderImg);
 
         function showNextSlide() {
             if (index < sliderLength) { 
@@ -300,10 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     currentSlide.innerText = `0${index}`;
                 }
-                sliderImg.forEach(slide => {
-                    slide.classList.add('hide'); 
-                })
-                sliderImg[index-1].classList.remove('hide'); 
+               showSlide(sliderImg);
             }
         }
 
@@ -315,10 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     currentSlide.innerText = `0${index}`;
                 }
-                sliderImg.forEach(slide => {
-                    slide.classList.add('hide'); 
-                })
-                sliderImg[index-1].classList.remove('hide'); 
+                showSlide(sliderImg);
             }
         }
 
