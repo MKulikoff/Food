@@ -159,8 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         createMenuItem() {
-
-
             const menuItem = document.createElement('div');
 
             if (this.classes.length === 0) {
@@ -184,10 +182,26 @@ document.addEventListener('DOMContentLoaded', () => {
             this.parent.append(menuItem);
         }
     }
+    // const fitnessMenu = new Card('img/tabs/vegy.jpg', 'vegy', 'Меню Фитнес', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 229, '[data-menu]');
 
-    const fitnessMenu = new Card('img/tabs/vegy.jpg', 'vegy', 'Меню Фитнес', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 229, '[data-menu]');
 
-    fitnessMenu.createMenuItem();
+    const getData = async (url) => {
+        const res = await fetch(url);
+
+        if (!res.ok) {
+            throw new Error(`Could not get ${url}, error code is ${res.status}`);
+        }
+
+        return await res.json();
+
+    };
+
+        getData('http://localhost:3000/menu').then(data => {
+        data.forEach(({img, altimg, title, descr, price}) => {
+            new Card(img, altimg, title, descr, price, '[data-menu]').createMenuItem();
+        }) 
+    });
+
 
     //Forms 
 
@@ -208,35 +222,34 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const status = document.createElement('img');
             status.src = msg.loading;
-            status.classList.add('spinner'); 
-            form.insertAdjacentElement('afterend', status); 
+            status.classList.add('spinner');
+            form.insertAdjacentElement('afterend', status);
 
             const formData = new FormData(form);
 
-            const obj = {};
+            const obj = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            formData.forEach((item, key) => {
-                obj[key] = item;
-            });
+            const postData = async (url, data) => {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: data
+                });
+                return await res.json();
+            };
 
-            fetch('server.php', {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify(obj)
-            }).then(data => {
-                return data.text(); 
-            })
-            .then(data => {
-                console.log(data);
-                loadingStatusModal(msg.success);
-                status.remove();
-            }).catch(() => {
-                loadingStatusModal(msg.fail);
-            }).finally(() => {
-                form.reset();
-            });
+            postData('http://localhost:3000/requests', obj)
+                .then(data => {
+                    console.log(data);
+                    loadingStatusModal(msg.success);
+                    status.remove();
+                }).catch(() => {
+                    loadingStatusModal(msg.fail);
+                }).finally(() => {
+                    form.reset();
+                });
         });
     }
 
@@ -255,15 +268,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelector('.modal').append(statusModal);
         setTimeout(() => {
-            statusModal.remove(); 
-            prevModalDialog.classList.add('show'); 
-            prevModalDialog.classList.remove('hide'); 
-            closeModal(); 
+            statusModal.remove();
+            prevModalDialog.classList.add('show');
+            prevModalDialog.classList.remove('hide');
+            closeModal();
         }, 4000);
     }
-
-    fetch('http://localhost:3000/menu')
-    .then(data => data.json())
-    .then(response => console.log(response));
 });
 
