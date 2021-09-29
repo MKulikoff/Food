@@ -196,10 +196,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     };
 
-        getData('http://localhost:3000/menu').then(data => {
-        data.forEach(({img, altimg, title, descr, price}) => {
+    getData('http://localhost:3000/menu').then(data => {
+        data.forEach(({ img, altimg, title, descr, price }) => {
             new Card(img, altimg, title, descr, price, '[data-menu]').createMenuItem();
-        }) 
+        })
     });
 
 
@@ -278,55 +278,71 @@ document.addEventListener('DOMContentLoaded', () => {
     //Slider 
 
     const sliderImg = document.querySelectorAll('.offer__slide'),
-            prevSlideBtn = document.querySelector('.offer__slider-prev'),
-            nextSlideBtn = document.querySelector('.offer__slider-next'),
-            currentSlide = document.querySelector('#current'),
-            totalSlide = document.querySelector('#total'); 
+        prevSlideBtn = document.querySelector('.offer__slider-prev'),
+        nextSlideBtn = document.querySelector('.offer__slider-next'),
+        currentSlide = document.querySelector('#current'),
+        totalSlide = document.querySelector('#total'),
+        slidesWrapper = document.querySelector('.offer__slider-wrapper'),
+        slidesField = document.querySelector('.offer__slider_inner'),
+        width = window.getComputedStyle(slidesWrapper).width
 
-        const sliderLength = sliderImg.length; 
-        let index = 1; 
+    const sliderLength = sliderImg.length;
+    slidesField.style.width = 100 * sliderLength + '%'; 
+    slidesField.style.display = 'flex'; 
+    slidesField.style.transition = '0.5s all';
+    slidesWrapper.style.overflow = 'hidden'; 
+    sliderImg.forEach(slide => {
+        slide.style.width = width; 
+    })
+    let offset = 0; 
+    let index = 1;
 
-        function showSlide(slides) {
-            slides.forEach(slide => {
-                slide.classList.add('hide'); 
-            })
-            slides[index-1].classList.remove('hide'); 
-        }
+    nextSlideBtn.addEventListener('click', () => {
+        offset += width; 
+        slidesField.style.transform = `translate(-${offset})`
+    })
 
-            if(sliderLength > 10) {
-                totalSlide.innerText = sliderLength; 
-            } else {
-                totalSlide.innerText = `0${sliderLength}`; 
-            }
+    // function showSlide(slides) {
+    //     slides.forEach(slide => {
+    //         slide.classList.add('hide');
+    //     })
+    //     slides[index - 1].classList.remove('hide');
+    // }
 
-            showSlide(sliderImg);
+    // if (sliderLength > 10) {
+    //     totalSlide.innerText = sliderLength;
+    // } else {
+    //     totalSlide.innerText = `0${sliderLength}`;
+    // }
 
-        function showNextSlide() {
-            if (index < sliderLength) { 
-                index++; 
-                if(index > 10) {
-                    currentSlide.innerText = index; 
-                } else {
-                    currentSlide.innerText = `0${index}`;
-                }
-               showSlide(sliderImg);
-            }
-        }
+    // showSlide(sliderImg);
 
-        function showPrevSLide() {
-            if(index > 1) {
-                index--; 
-                if(index > 10) {
-                    currentSlide.innerText = index; 
-                } else {
-                    currentSlide.innerText = `0${index}`;
-                }
-                showSlide(sliderImg);
-            }
-        }
+    // function showNextSlide() {
+    //     if (index < sliderLength) {
+    //         index++;
+    //         if (index > 10) {
+    //             currentSlide.innerText = index;
+    //         } else {
+    //             currentSlide.innerText = `0${index}`;
+    //         }
+    //         showSlide(sliderImg);
+    //     }
+    // }
 
-        nextSlideBtn.addEventListener('click', showNextSlide); 
-        prevSlideBtn.addEventListener('click', showPrevSLide); 
-    
+    // function showPrevSLide() {
+    //     if (index > 1) {
+    //         index--;
+    //         if (index > 10) {
+    //             currentSlide.innerText = index;
+    //         } else {
+    //             currentSlide.innerText = `0${index}`;
+    //         }
+    //         showSlide(sliderImg);
+    //     }
+    // }
+
+    // nextSlideBtn.addEventListener('click', showNextSlide);
+    // prevSlideBtn.addEventListener('click', showPrevSLide);
+
 });
 
