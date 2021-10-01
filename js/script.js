@@ -278,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //Slider 
 
     const sliderImg = document.querySelectorAll('.offer__slide'),
+        slider = document.querySelector('.offer__slider');
         prevSlideBtn = document.querySelector('.offer__slider-prev'),
         nextSlideBtn = document.querySelector('.offer__slider-next'),
         currentSlide = document.querySelector('#current'),
@@ -290,6 +291,42 @@ document.addEventListener('DOMContentLoaded', () => {
     let offset = 0;
     let index = 1;
 
+    slider.style.position = 'relative'; 
+
+    const indicators = document.createElement('ol'); 
+    indicators.classList.add('carousel-indicators');
+    indicators.cssText =  `position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 15;
+    display: flex;
+    justify-content: center;
+    margin-right: 15%;
+    margin-left: 15%;
+    list-style: none;`
+
+    slider.append(indicators); 
+
+    for(let i = 0; i < sliderLength; i++) {
+        const dot = document.createElement('li'); 
+        dot.setAttribute('data-slide-to', i+1)
+        dot.classList.add('dot'); 
+        dot.cssText = `box-sizing: content-box;
+        flex: 0 1 auto;
+        width: 30px;
+        height: 6px;
+        margin-right: 3px;
+        margin-left: 3px;
+        cursor: pointer;
+        background-color: #fff;
+        background-clip: padding-box;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        opacity: .5;
+        transition: opacity .6s ease;`
+
+    }
 
     if (sliderLength > 10) {
         totalSlide.innerText = sliderLength;
