@@ -344,14 +344,18 @@ document.addEventListener('DOMContentLoaded', () => {
         dots[index - 1].style.opacity = 1; 
     }
 
+    function clearNumber(number) {
+        return +number.replace(/\D/g, '');
+    }
+
     nextSlideBtn.addEventListener('click', () => {
-        if (offset == +width.slice(0, width.length - 2) * (sliderLength - 1)) {
+        if (offset == clearNumber(width) * (sliderLength - 1)) {
             offset = 0;
             index = 0;
             currentSlide.innerText = `0${index}`;
             slidesField.style.transform = `translate(-${offset}px)`;
         } else {
-            offset += +width.slice(0, width.length - 2);
+            offset += clearNumber(width);
             slidesField.style.transform = `translate(-${offset}px)`;
         }
 
@@ -368,11 +372,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     prevSlideBtn.addEventListener('click', () => {
         if (offset == 0) {
-            offset = +width.slice(0, width.length - 2) * (sliderLength - 1);
+            offset = clearNumber(width) * (sliderLength - 1);
+
             slidesField.style.transform = `translate(-${offset}px)`;
 
         } else {
-            offset -= +width.slice(0, width.length - 2);
+            offset -= clearNumber(width);
             slidesField.style.transform = `translate(-${offset}px)`;
         }
  
@@ -394,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setDotsOpacity(); 
             
-            offset = +width.slice(0, width.length - 2) * (index - 1);
+            offset = clearNumber(width) * (index - 1);
             slidesField.style.transform = `translate(-${offset}px)`;
             formatCounter(sliderLength); 
 
