@@ -216,6 +216,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal */ "./js/modules/modal.js");
+ 
+
 function forms() {
     //Forms 
 
@@ -270,7 +273,7 @@ function forms() {
     function loadingStatusModal(message) {
         const prevModalDialog = document.querySelector('.modal__dialog');
         prevModalDialog.classList.add('hide');
-        openModal();
+        (0,_modal__WEBPACK_IMPORTED_MODULE_0__.openModal)();
 
         const statusModal = document.createElement('div');
         statusModal.classList.add('modal__dialog');
@@ -285,7 +288,7 @@ function forms() {
             statusModal.remove();
             prevModalDialog.classList.add('show');
             prevModalDialog.classList.remove('hide');
-            closeModal();
+            (0,_modal__WEBPACK_IMPORTED_MODULE_0__.closeModal)();
         }, 4000);
     }
 }
@@ -302,48 +305,54 @@ function forms() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "openModal": () => (/* binding */ openModal),
+/* harmony export */   "closeModal": () => (/* binding */ closeModal)
 /* harmony export */ });
-function modal() {
+function openModal(modalSelector, modalTimerId) {
+    const modal = document.querySelector(modalSelector); 
+    modal.classList.remove('hide');
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    if(modalTimerId) {
+        clearInterval(modalTimerId);
+    }
+}
+
+function closeModal(modalSelector) {
+    const modal = document.querySelector(modalSelector); 
+    modal.classList.remove('show');
+    modal.classList.add('hide');
+    document.body.style.overflow = '';
+}
+
+
+function modal(triggerSelector, modalSelector, modalTimerId) {
      //Modal 
 
-     const openModalBtns = document.querySelectorAll('[data-modal]'),
-     modal = document.querySelector('.modal');
+     const openModalBtns = document.querySelectorAll(triggerSelector),
+     modal = document.querySelector(modalSelector);
 
- function openModal() {
-     modal.classList.remove('hide');
-     modal.classList.add('show');
-     document.body.style.overflow = 'hidden';
-     clearInterval(modalTimerId);
- }
-
- function closeModal() {
-     modal.classList.remove('show');
-     modal.classList.add('hide');
-     document.body.style.overflow = '';
- }
 
  openModalBtns.forEach(button => {
-     button.addEventListener('click', openModal);
+     button.addEventListener('click', () => openModal(modalSelector, modalTimerId));
  });
 
  modal.addEventListener('click', (e) => {
      if (e.target === modal || e.target.getAttribute('data-close') == '') {
-         closeModal();
+         closeModal(modalSelector);
      }
  });
 
  document.addEventListener('keydown', (e) => {
      if (e.code === 'Escape' && modal.classList.contains('show')) {
-         closeModal();
+         closeModal(modalSelector);
      }
  });
 
- const modalTimerId = setTimeout(openModal, 5000);
-
  function showModalByScroll() {
      if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
-         openModal();
+         openModal(modalSelector, modalTimerId);
          window.removeEventListener('scroll', showModalByScroll);
      }
  }
@@ -352,6 +361,10 @@ function modal() {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (modal); 
+
+ 
+
+
 
 /***/ }),
 
@@ -705,17 +718,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+ 
 
 document.addEventListener('DOMContentLoaded', () => {
-
+    const modalTimerId = setTimeout(() => (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__.openModal)('.modal', modalTimerId), 5000);
     (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_0__["default"])();
     (0,_modules_calculator__WEBPACK_IMPORTED_MODULE_2__["default"])();
-    (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])();
+    (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])('[data-modal]', '.modal', modalTimerId);
     (0,_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])();
     (0,_modules_slider__WEBPACK_IMPORTED_MODULE_4__["default"])();
     (0,_modules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])();
     (0,_modules_cards__WEBPACK_IMPORTED_MODULE_6__["default"])();
-
 });
 
 
