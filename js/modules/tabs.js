@@ -7,7 +7,7 @@ function tabs() {
 
 
     tabParent.addEventListener('click', (event) => {
-        target = event.target;
+        const target = event.target;
         if (target && target.classList.contains('tabheader__item')) {
             tabs.forEach((item, index) => {
                 if (item == target) {
@@ -39,4 +39,4 @@ function tabs() {
     showTabsContent();
 }
 
-module.exports = tabs; 
+export default tabs; 

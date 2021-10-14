@@ -2,8 +2,8 @@ function slider() {
     //Slider 
 
     const sliderImg = document.querySelectorAll('.offer__slide'),
-        slider = document.querySelector('.offer__slider');
-    prevSlideBtn = document.querySelector('.offer__slider-prev'),
+        slider = document.querySelector('.offer__slider'),
+        prevSlideBtn = document.querySelector('.offer__slider-prev'),
         nextSlideBtn = document.querySelector('.offer__slider-next'),
         currentSlide = document.querySelector('#current'),
         totalSlide = document.querySelector('#total'),
@@ -131,4 +131,4 @@ function slider() {
     });
 }
 
-module.exports = slider; 
+export default slider; 

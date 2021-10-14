@@ -32,8 +32,8 @@ function timer() {
             days = timer.querySelector('#days'),
             hours = timer.querySelector('#hours'),
             minutes = timer.querySelector('#minutes'),
-            seconds = timer.querySelector('#seconds');
-        timeInterval = setInterval(updateClock, 1000);
+            seconds = timer.querySelector('#seconds'),
+            timeInterval = setInterval(updateClock, 1000);
 
         updateClock();
 
@@ -54,4 +54,4 @@ function timer() {
     setClock('.timer', deadline);
 }
 
-module.exports = timer; 
+export default timer; 

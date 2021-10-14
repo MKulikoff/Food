@@ -20,7 +20,7 @@ function calculator() {
     }
 
     function initDynamicInfo(selector, activeClass) {
-        elements = document.querySelectorAll(selector); 
+        const elements = document.querySelectorAll(selector); 
 
         elements.forEach((elem) => {
             elem.classList.remove(activeClass); 
@@ -111,4 +111,4 @@ function calculator() {
     getDynamicInfo('#weight');
 }
 
-module.exports = calculator; 
+export default calculator; 
