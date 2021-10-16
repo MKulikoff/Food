@@ -1,3 +1,5 @@
+import {getData} from '../services/services'; 
+
 function cards() {
     //Cards 
 
@@ -42,17 +44,6 @@ function cards() {
             this.parent.append(menuItem);
         }
     }
-
-    const getData = async (url) => {
-        const res = await fetch(url);
-
-        if (!res.ok) {
-            throw new Error(`Could not get ${url}, error code is ${res.status}`);
-        }
-
-        return await res.json();
-
-    };
 
     getData('http://localhost:3000/menu').then(data => {
         data.forEach(({ img, altimg, title, descr, price }) => {
