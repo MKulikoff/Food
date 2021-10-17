@@ -219,7 +219,7 @@ function forms(formSelector, modalTimerId) {
     const forms = document.querySelectorAll(formSelector);
 
     forms.forEach((item) => {
-        postData(item);
+        sendData(item);
     });
 
     const msg = {
@@ -228,7 +228,7 @@ function forms(formSelector, modalTimerId) {
         fail: 'Произошла ошибка'
     };
 
-    function postData(form) {
+    function sendData(form) {
         console.log(form); 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -241,7 +241,7 @@ function forms(formSelector, modalTimerId) {
 
             const obj = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            postData('http://localhost:3000/requests', obj)
+            (0,_services_services__WEBPACK_IMPORTED_MODULE_1__.postData)('http://localhost:3000/requests', obj)
                 .then(data => {
                     console.log(data);
                     loadingStatusModal(msg.success);

@@ -7,7 +7,7 @@ function forms(formSelector, modalTimerId) {
     const forms = document.querySelectorAll(formSelector);
 
     forms.forEach((item) => {
-        postData(item);
+        sendData(item);
     });
 
     const msg = {
@@ -16,7 +16,7 @@ function forms(formSelector, modalTimerId) {
         fail: 'Произошла ошибка'
     };
 
-    function postData(form) {
+    function sendData(form) {
         console.log(form); 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
