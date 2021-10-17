@@ -17,7 +17,6 @@ function forms(formSelector, modalTimerId) {
     };
 
     function sendData(form) {
-        console.log(form); 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const status = document.createElement('img');

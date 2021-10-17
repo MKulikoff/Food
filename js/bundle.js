@@ -229,7 +229,6 @@ function forms(formSelector, modalTimerId) {
     };
 
     function sendData(form) {
-        console.log(form); 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const status = document.createElement('img');
@@ -362,20 +361,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function slider() {
+function slider({container, prevArrow, nextArrow, totalCounter, currentCounter, wrapper, field}) {
     //Slider 
 
     const sliderImg = document.querySelectorAll('.offer__slide'),
-        slider = document.querySelector('.offer__slider'),
-        prevSlideBtn = document.querySelector('.offer__slider-prev'),
-        nextSlideBtn = document.querySelector('.offer__slider-next'),
-        currentSlide = document.querySelector('#current'),
-        totalSlide = document.querySelector('#total'),
-        slidesWrapper = document.querySelector('.offer__slider-wrapper'),
-        slidesField = document.querySelector('.offer__slider_inner'),
+        slider = document.querySelector(container),
+        prevSlideBtn = document.querySelector(prevArrow),
+        nextSlideBtn = document.querySelector(nextArrow),
+        currentSlide = document.querySelector(currentCounter),
+        totalSlide = document.querySelector(totalCounter),
+        slidesWrapper = document.querySelector(wrapper),
+        slidesField = document.querySelector(field),
         width = window.getComputedStyle(slidesWrapper).width;
 
     const sliderLength = sliderImg.length;
+    console.log(sliderLength); 
     let offset = 0;
     let index = 1;
 
@@ -563,10 +563,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function timer() {
+function timer(id, deadline) {
     //Timer 
-
-    const deadline = '2021-10-07';
 
     function getRemainingTime(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -616,7 +614,7 @@ function timer() {
         }
     }
 
-    setClock('.timer', deadline);
+    setClock(id, deadline);
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (timer); 
@@ -747,8 +745,16 @@ document.addEventListener('DOMContentLoaded', () => {
     (0,_modules_calculator__WEBPACK_IMPORTED_MODULE_2__["default"])();
     (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])('[data-modal]', '.modal', modalTimerId);
     (0,_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])('form', modalTimerId);
-    (0,_modules_slider__WEBPACK_IMPORTED_MODULE_4__["default"])();
-    (0,_modules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])();
+    (0,_modules_slider__WEBPACK_IMPORTED_MODULE_4__["default"])({
+        container: '.offer__slider',
+        nextArrow: '.offer__slider-next', 
+        prevArrow: '.offer__slider-prev', 
+        currentCounter: '#current', 
+        totalCounter: '#total', 
+        wrapper: '.offer__slider-wrapper', 
+        field: '.offer__slider_inner', 
+    });
+    (0,_modules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])('.timer', '2021-10-19');
     (0,_modules_cards__WEBPACK_IMPORTED_MODULE_6__["default"])();
 });
 

@@ -14,8 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
     calculator();
     modal('[data-modal]', '.modal', modalTimerId);
     forms('form', modalTimerId);
-    slider();
-    timer();
+    slider({
+        container: '.offer__slider',
+        nextArrow: '.offer__slider-next', 
+        prevArrow: '.offer__slider-prev', 
+        currentCounter: '#current', 
+        totalCounter: '#total', 
+        wrapper: '.offer__slider-wrapper', 
+        field: '.offer__slider_inner', 
+    });
+    timer('.timer', '2021-10-19');
     cards();
 });
 
